@@ -110,8 +110,9 @@ AI LoanSys is ideal for:
 ### Installation & Setup
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-username/ai-loan-app.git
-   cd ai-loan-app
+   git clone https://github.com/Aye238/AI-LoanSys.git
+   
+   cd AI-LoanSys
    ```
 
 2. **Configure Environment Variables**
