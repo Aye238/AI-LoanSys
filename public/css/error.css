@@ -1,0 +1,48 @@
+.error-page-container {
+    text-align: center;
+    padding-top: 50px;
+}
+
+.error-page-container h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--error-color);
+}
+
+.error-page-container p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+}
+
+.error-stack {
+    background-color: #212529;
+    color: #e0e0e0;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    text-align: left;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 300px;
+    overflow-y: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    margin-top: 20px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 12px 25px;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.back-link:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}

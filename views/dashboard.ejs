@@ -1,0 +1,205 @@
+<%- include('partials/header', { title: 'Admin Dashboard' , page_css: 'dashboard.css' ,
+	body_class: 'dark-theme page-dashboard' }) %>
+
+	<div class="dashboard-header">
+		<h1>Admin Dashboard</h1>
+		<p>Real-time overview of system performance and AI model metrics.</p>
+	</div>
+
+	<%# Step 2: Main Conditional Logic - This is the core of the new feature %>
+		<% if (aiStatus.state==='Ready' ) { %>
+
+			<div class="dashboard-grid">
+				<div class="stat-card">
+					<h3>Total Applications</h3>
+					<p class="stat-number">
+						<%= totalApplications %>
+					</p>
+				</div>
+				<div class="stat-card">
+					<h3>Approved</h3>
+					<p class="stat-number success-text">
+						<%= approvedCount %>
+					</p>
+				</div>
+				<div class="stat-card">
+					<h3>Needs Review</h3>
+					<p class="stat-number review-text">
+						<%= reviewCount %>
+					</p>
+				</div>
+				<div class="stat-card">
+					<h3>Rejected</h3>
+					<p class="stat-number danger-text">
+						<%= rejectedCount %>
+					</p>
+				</div>
+				<div class="stat-card">
+					<h3>Approval Rate</h3>
+					<p class="stat-number">
+						<%= approvalRate %>%
+					</p>
+				</div>
+				<div class="stat-card">
+					<h3>Avg. Loan Amount</h3>
+					<p class="stat-number">$<%= Number(averageLoanAmount).toLocaleString() %>
+					</p>
+				</div>
+
+				<div class="chart-card">
+					<h3>Decision Distribution</h3>
+					<div class="chart-wrapper">
+						<canvas id="decisionChart"></canvas>
+					</div>
+				</div>
+
+				<div class="admin-actions-card">
+					<h3><span class="tool-icon">⚙️</span> Admin Tools</h3>
+					<p>Use the latest application data, including manual overrides, to improve the AI model's accuracy
+						over time.</p>
+					<a href="/admin/retrain?initial=false" class="btn-retrain">
+						Retrain AI Model
+					</a>
+				</div>
+			</div>
+
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+					const ctx = document.getElementById('decisionChart').getContext('2d');
+
+					Chart.defaults.font.family = 'Inter, sans-serif';
+					Chart.defaults.color = 'rgba(255, 255, 255, 0.7)';
+
+					const decisionChart = new Chart(ctx, {
+						type: 'doughnut',
+						data: {
+							labels: ['Approved', 'Needs Review', 'Rejected'],
+							datasets: [{
+								label: 'Loan Decisions',
+								data: <% - JSON.stringify(decisionData) %>,
+								backgroundColor: [
+									'rgba(40, 167, 69, 0.7)',
+									'rgba(255, 193, 7, 0.7)',
+									'rgba(220, 53, 69, 0.7)'
+								],
+								borderColor: [
+									'#2c2c2c',
+									'#2c2c2c',
+									'#2c2c2c'
+								],
+								borderWidth: 3,
+								hoverOffset: 12,
+								hoverBorderColor: '#fff'
+							}]
+						},
+						options: {
+							responsive: true,
+							maintainAspectRatio: false,
+							cutout: '65%',
+							plugins: {
+								legend: {
+									position: 'bottom',
+									labels: {
+										padding: 25,
+										font: { size: 14 }
+									}
+								},
+								tooltip: {
+									backgroundColor: '#1a1a1a',
+									titleFont: { size: 16, weight: 'bold' },
+									bodyFont: { size: 14 },
+									padding: 15,
+									cornerRadius: 8,
+									boxPadding: 5
+								}
+							}
+						}
+					});
+				});
+			</script>
+
+			<% } else { %>
+
+				<div class="setup-card-container">
+					<% if (aiStatus.state==='Not Initialized' ) { %>
+						<div class="setup-card setup-info">
+							<h2>Welcome to AI LoanSys Setup!</h2>
+							<p>
+								<%= aiStatus.message %>
+							</p>
+							<a href="/admin/retrain?initial=true" class="btn btn-primary btn-lg">Train Initial AI
+								Model</a>
+						</div>
+						<% } else if (aiStatus.state==='Corrupted' ) { %>
+							<div class="setup-card setup-warning">
+								<h2>Warning: AI Model Corruption Detected</h2>
+								<p>
+									<%= aiStatus.message %>
+								</p>
+								<% if(aiStatus.missingFiles.length> 0) { %>
+									<p><strong>Missing Files:</strong>
+										<%= aiStatus.missingFiles.join(', ') %></p>
+                <% } %>
+                <a href="/admin/retrain?initial=false" class="btn btn-warning btn-lg">Force Retrain Model</a>
+            </div>
+        <% } else { %>
+            <div class="setup-card setup-danger">
+                <h2>Critical Error: Core Files Missing</h2>
+                <p><%= aiStatus.message %></p>
+                <p>Please restore the core Python files and the base dataset in the ' python/ai_model' directory and
+											restart the server.</p>
+							</div>
+							<% } %>
+				</div>
+
+				<% } %>
+
+					<style>
+						.setup-card-container {
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							padding-top: 50px;
+						}
+
+						.setup-card {
+							max-width: 700px;
+							background-color: var(--surface-color);
+							padding: 40px;
+							border-radius: var(--border-radius);
+							text-align: center;
+							border-left: 5px solid;
+							box-shadow: var(--box-shadow);
+						}
+
+						.setup-card h2 {
+							font-size: 2rem;
+							margin-bottom: 15px;
+						}
+
+						.setup-card p {
+							font-size: 1.1rem;
+							color: var(--text-secondary);
+							margin-bottom: 30px;
+							line-height: 1.7;
+						}
+
+						.setup-card.setup-info {
+							border-color: var(--primary-color);
+						}
+
+						.setup-card.setup-warning {
+							border-color: #fd7e14;
+						}
+
+						.setup-card.setup-danger {
+							border-color: var(--error-color);
+						}
+
+						.btn-lg {
+							padding: 15px 35px;
+							font-size: 1.2rem;
+						}
+					</style>
+
+					<%- include('partials/footer') %>

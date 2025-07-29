@@ -1,0 +1,42 @@
+<%- include('partials/header', { title: 'Retraining Result' , page_css: 'retrain.css' , body_class: 'dark-theme' }) %>
+
+    <div class="retrain-result-container">
+        <div class="result-card">
+            <% if (exitCode===0) { %>
+                <h1>
+                    <span class="status-icon success">✓</span>
+                    Retraining Process Complete
+                </h1>
+                <p class="subtitle">The AI model was successfully updated with the latest data.</p>
+                <% } else { %>
+                    <h1>
+                        <span class="status-icon failure">✕</span>
+                        Retraining Process Failed
+                    </h1>
+                    <p class="subtitle">The process exited with code: <%= exitCode %>. Please review the logs.</p>
+                    <% } %>
+
+                        <h4>Process Log:</h4>
+                        <div class="log-output-box">
+                            <%# We loop through the output and give different classes to errors vs normal text %>
+                                <% output.split('<br>').forEach(line => { %>
+                                    <% if (line.trim()) { %>
+                                        <% if (line.toLowerCase().includes('error') ||
+                                            line.toLowerCase().includes('warning')) { %>
+                                            <div class="log-line error">
+                                                <%= line %>
+                                            </div>
+                                            <% } else { %>
+                                                <div class="log-line">
+                                                    <%= line %>
+                                                </div>
+                                                <% } %>
+                                                    <% } %>
+                                                        <% }) %>
+                        </div>
+
+                        <a href="/admin/dashboard" class="btn btn-primary back-link">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>

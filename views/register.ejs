@@ -1,0 +1,29 @@
+<%- include('partials/header', { title: 'Register' , page_css: 'form.css' , body_class: 'page-auth' , user: null,
+	success_msg: typeof success_msg !=='undefined' ? success_msg : '' , error_msg: typeof error_msg !=='undefined' ?
+	error_msg : '' }) %>
+
+	<div class="auth-card">
+		<h2>Register New Account</h2>
+
+		<% if (typeof error !=='undefined' && error) { %>
+			<p class="error-message">
+				<%= error %>
+			</p>
+			<% } %>
+
+				<form action="/auth/register" method="POST" class="auth-form">
+					<div class="form-group">
+						<label for="username">Username</label>
+						<input type="text" id="username" name="username" required>
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input type="password" id="password" name="password" required>
+					</div>
+					<button type="submit" class="submit-btn">Register</button>
+				</form>
+
+				<p class="bottom-link">Already have an account? <a href="/auth/login">Login</a></p>
+	</div>
+
+	<%- include('partials/footer') %>

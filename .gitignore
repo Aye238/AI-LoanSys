@@ -1,0 +1,25 @@
+# --- Node.js Dependencies ---
+/node_modules
+
+# --- Python Environment ---
+/python/venv/
+__pycache__/
+*.pyc
+
+# --- AI Model Generated Files ---
+python/ai_model/*.pkl
+
+# --- Secrets & Environment Variables ---
+.env
+
+# --- Log Files ---
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# --- Operating System & Editor Files ---
+.DS_Store
+
+# VS Code specific
+.vscode/

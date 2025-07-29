@@ -1,0 +1,171 @@
+<%- include('partials/header', { title: 'Application History' , page_css: 'history.css' ,
+	body_class: 'dark-theme page-history' , /* Applying both dark theme and page-specific class */ user: typeof user
+	!=='undefined' ? user : null, success_msg: typeof success_msg !=='undefined' ? success_msg : '' , error_msg: typeof
+	error_msg !=='undefined' ? error_msg : '' }) %>
+
+	<div class="history-header">
+		<h1>Application History</h1>
+		<p>Review, filter, and manage all submitted loan applications.</p>
+	</div>
+
+	<div class="filter-container">
+		<button id="filterToggle" class="btn btn-secondary">Filter & Search ▼</button>
+		<div id="filterDrawer" class="filter-drawer">
+			<form action="/admin/history" method="GET" class="filter-form">
+				<div class="form-group">
+					<label for="decision">Filter by Decision</label>
+					<select id="decision" name="decision" class="form-control">
+						<option value="">All</option>
+						<option value="Auto-Approved" <%=(query.decision==='Auto-Approved' ) ? 'selected' : '' %>
+							>Approved</option>
+						<option value="Needs Review" <%=(query.decision==='Needs Review' ) ? 'selected' : '' %>>Needs
+							Review</option>
+						<option value="Auto-Rejected" <%=(query.decision==='Auto-Rejected' ) ? 'selected' : '' %>
+							>Rejected</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="minAmount">Min Loan Amount</label>
+					<input type="number" id="minAmount" name="minAmount" class="form-control" placeholder="$"
+						value="<%= query.minAmount || '' %>">
+				</div>
+				<div class="form-group">
+					<label for="maxAmount">Max Loan Amount</label>
+					<input type="number" id="maxAmount" name="maxAmount" class="form-control" placeholder="$"
+						value="<%= query.maxAmount || '' %>">
+				</div>
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary">Apply Filter</button>
+					<a href="/admin/history" class="btn btn-secondary">Clear</a>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="history-table-container">
+		<table class="history-table">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Applicant Details</th>
+					<th>Loan Amount</th>
+					<th>AI Risk Class</th>
+					<th>Final Decision</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if (applications.length> 0) { %>
+					<% applications.forEach(function(app) { %>
+						<tr class="expandable-row" data-target="details-<%= app._id %>">
+							<td>
+								<%= new Date(app.applicationDate).toLocaleDateString() %>
+							</td>
+							<td>
+								<div class="applicant-info">
+									<span><strong>Score:</strong>
+										<%= app.creditScore %>
+									</span>
+									<span><strong>Income:</strong> $<%= app.annualIncome.toLocaleString() %></span>
+								</div>
+							</td>
+							<td class="loan-amount">$<%= app.loanAmount.toLocaleString() %>
+							</td>
+							<td>
+								<%= app.riskClass || 'N/A' %>
+							</td>
+							<td>
+								<span
+									class="status-pill status-<%= app.finalDecision.toLowerCase().replace(/\s+/g, '-') %>">
+									<%= app.finalDecision %>
+								</span>
+							</td>
+							<td><span class="arrow">▼</span></td>
+						</tr>
+						<tr class="details-row" id="details-<%= app._id %>">
+							<td colspan="6">
+								<div class="details-content">
+									<h4>Admin Override</h4>
+									<p>Override the AI's decision for application <strong>
+											<%= app._id %>
+										</strong>.</p>
+									<form class="override-form" action="/admin/override/<%= app._id %>" method="POST">
+										<select name="newDecision" class="form-control">
+											<option value="Auto-Approved">Approve</option>
+											<option value="Auto-Rejected">Reject</option>
+											<option value="Needs Review">Set to Needs Review</option>
+										</select>
+										<button type="submit" class="btn btn-primary">Save Override</button>
+									</form>
+								</div>
+							</td>
+						</tr>
+						<% }); %>
+							<% } else { %>
+								<tr class="no-results">
+									<td colspan="6">No applications found matching your criteria.</td>
+								</tr>
+								<% } %>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="pagination-container">
+		<div class="page-info">
+			<% if (applications.length> 0) { %>
+				Page <strong>
+					<%= currentPage %>
+				</strong> of <strong>
+					<%= lastPage %>
+				</strong>
+				<% } %>
+		</div>
+		<div class="pagination-links">
+			<% if (lastPage> 1) { %>
+				<% const q=new URLSearchParams(query).toString(); %>
+					<% if (hasPreviousPage) { %>
+						<a href="/admin/history?page=<%= previousPage %>&<%= q %>" class="btn btn-secondary">« Prev</a>
+						<% } %>
+							<% if (hasNextPage) { %>
+								<a href="/admin/history?page=<%= nextPage %>&<%= q %>" class="btn btn-secondary">Next
+									»</a>
+								<% } %>
+									<% } %>
+		</div>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const filterToggle = document.getElementById('filterToggle');
+			const filterDrawer = document.getElementById('filterDrawer');
+			if (filterToggle) {
+				filterToggle.addEventListener('click', () => {
+					const isHidden = filterDrawer.style.display === 'none' || !filterDrawer.style.display;
+					filterDrawer.style.display = isHidden ? 'block' : 'none';
+					filterToggle.innerHTML = isHidden ? 'Filter & Search ▲' : 'Filter & Search ▼';
+				});
+			}
+
+			document.querySelectorAll('.expandable-row').forEach(row => {
+				row.addEventListener('click', (e) => {
+					if (e.target.closest('.override-form')) return;
+
+					const targetId = row.dataset.target;
+					const detailsRow = document.getElementById(targetId);
+					const arrow = row.querySelector('.arrow');
+
+					row.classList.toggle('active');
+
+					if (detailsRow.style.display === 'table-row') {
+						detailsRow.style.display = 'none';
+						if (arrow) arrow.textContent = '▼';
+					} else {
+						detailsRow.style.display = 'table-row';
+						if (arrow) arrow.textContent = '▲';
+					}
+				});
+			});
+		});
+	</script>
+
+	<%- include('partials/footer') %>

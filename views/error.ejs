@@ -1,0 +1,16 @@
+<%- include('partials/header', { title: 'Error' , page_css: 'error.css' , body_class: 'page-error' , user: typeof user
+	!=='undefined' ? user : null, success_msg: typeof success_msg !=='undefined' ? success_msg : '' , error_msg: typeof
+	error_msg !=='undefined' ? error_msg : '' }) %>
+
+	<div class="error-page-container">
+		<h1>
+			<%= statusCode %> - <%= message %>
+		</h1>
+		<p>Sorry, an unexpected error occurred.</p>
+		<% if (process.env.NODE_ENV !=='production' && error.stack) { %>
+			<pre class="error-stack"><%= error.stack %></pre>
+			<% } %>
+				<a href="/" class="back-link">Go to Homepage</a>
+	</div>
+
+	<%- include('partials/footer') %>

@@ -1,0 +1,90 @@
+<%- include('partials/header', { title: 'Live Retraining Console' , page_css: 'retrain.css' , body_class: 'dark-theme'
+    }) %>
+
+    <div class="retrain-result-container">
+        <div class="result-card">
+            <h1>
+                <span id="statusIcon" class="status-icon">▶</span>
+                <span id="statusText">AI Model Retraining Console</span>
+            </h1>
+            <p class="subtitle" id="statusSubtitle">Ready to start the process. Click the button below.</p>
+            <div class="log-output-box" id="logOutput">
+                <div class="log-line info">Waiting for process to start...</div>
+            </div>
+            <div class="form-actions" style="margin-top: 20px; display: flex; gap: 15px;">
+                <button id="startRetrainBtn" class="btn btn-primary">Start Training</button>
+                <a href="/admin/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const startBtn = document.getElementById('startRetrainBtn');
+            const logOutput = document.getElementById('logOutput');
+            const statusIcon = document.getElementById('statusIcon');
+            const statusText = document.getElementById('statusText');
+            const statusSubtitle = document.getElementById('statusSubtitle');
+
+            const isInitial = <%= typeof isInitialTrain !== 'undefined' ? isInitialTrain : false %>;
+
+            if (isInitial) {
+                startBtn.textContent = 'Start Initial Training';
+                statusText.textContent = 'Initial AI Model Training';
+                statusSubtitle.textContent = 'This process will build the AI models from the base dataset for the first time.';
+            }
+
+            const socket = io();
+
+            socket.on('log_line', (data) => {
+                const line = document.createElement('div');
+                line.textContent = data.line;
+
+                if (data.type === 'stderr') {
+                    line.className = 'log-line error';
+                } else {
+                    line.className = 'log-line';
+                }
+                logOutput.appendChild(line);
+                logOutput.scrollTop = logOutput.scrollHeight;
+            });
+
+            socket.on('process_finished', (data) => {
+                const exitCode = data.exitCode;
+                if (exitCode === 0) {
+                    statusIcon.textContent = '✓';
+                    statusIcon.className = 'status-icon success';
+                    statusText.textContent = 'Retraining Process Complete';
+                    statusSubtitle.textContent = 'The model was successfully updated.';
+                } else {
+                    statusIcon.textContent = '✕';
+                    statusIcon.className = 'status-icon failure';
+                    statusText.textContent = 'Retraining Process Failed';
+                    statusSubtitle.textContent = `Process exited with a non-zero code: ${exitCode}.`;
+                }
+                startBtn.disabled = false;
+                startBtn.textContent = 'Start Retraining Again';
+            });
+
+            startBtn.addEventListener('click', () => {
+                startBtn.disabled = true;
+                startBtn.textContent = 'Retraining in Progress...';
+                logOutput.innerHTML = '<div class="log-line info">Process started...</div>';
+                statusIcon.textContent = '⚙️';
+                statusIcon.className = 'status-icon';
+                statusText.textContent = 'Retraining in Progress';
+                statusSubtitle.textContent = 'Streaming live output from the server...';
+
+                fetch('/admin/retrain', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ socketId: socket.id })
+                })
+                    .then(res => res.json())
+                    .then(data => console.log(data.message));
+            });
+        });
+    </script>
+
+    <%- include('partials/footer') %>

@@ -1,0 +1,83 @@
+<%- include('partials/header', { title: 'New Loan Application' , page_css: 'form.css' ,
+    body_class: 'page-application-form' }) %>
+
+    <div class="form-page-container">
+        <div class="form-card" id="loanFormCard">
+            <div class="form-card-header">
+                <h2>Intelligent Loan Application</h2>
+                <p>Complete the form below to get an instant, AI-powered decision.</p>
+            </div>
+
+            <% if (locals.errors && locals.errors.length> 0) { %>
+                <div class="error-container">
+                    <ul>
+                        <% locals.errors.forEach(function(error) { %>
+                            <li>
+                                <%= error.msg %>
+                            </li>
+                            <% }); %>
+                    </ul>
+                </div>
+                <% } %>
+
+                    <form id="loan-form" action="/submit" method="POST">
+                        <!-- Credit Score Field -->
+                        <div class="form-group">
+                            <label for="creditScore">Credit Score</label>
+                            <span class="tooltip-trigger"
+                                data-tooltip="A credit score above 600 is crucial for consideration. This is one of the most important factors.">?</span>
+                            <input type="number" id="creditScore" name="creditScore" class="form-control"
+                                placeholder="e.g., 300-850" required
+                                value="<%= (typeof formData !== 'undefined' && formData.creditScore) ? formData.creditScore : '' %>">
+                        </div>
+
+                        <!-- Annual Income Field -->
+                        <div class="form-group">
+                            <label for="annualIncome">Annual Income ($)</label>
+                            <span class="tooltip-trigger"
+                                data-tooltip="Your total income for the year. This is used to calculate your loan-to-income ratio.">?</span>
+                            <input type="number" id="annualIncome" name="annualIncome" class="form-control"
+                                placeholder="e.g., 50000" required
+                                value="<%= (typeof formData !== 'undefined' && formData.annualIncome) ? formData.annualIncome : '' %>">
+                        </div>
+
+                        <!-- Loan Amount Field -->
+                        <div class="form-group">
+                            <label for="loanAmount">Loan Amount ($)</label>
+                            <span class="tooltip-trigger"
+                                data-tooltip="The amount you wish to borrow. A high loan amount compared to your annual income (e.g., more than 2x) is considered high-risk and may lead to a rejection or a lower suggested amount.">?</span>
+                            <input type="number" id="loanAmount" name="loanAmount" class="form-control" min="0"
+                                placeholder="e.g., 25000" required
+                                value="<%= (typeof formData !== 'undefined' && formData.loanAmount) ? formData.loanAmount : '' %>">
+                        </div>
+
+                        <!-- Employment Type Field -->
+                        <div class="form-group">
+                            <label for="employmentType">Employment Type</label>
+                            <span class="tooltip-trigger"
+                                data-tooltip="For this simplified assessment, other factors like marital status and education are assumed. Your selection helps provide context.">?</span>
+                            <select id="employmentType" name="employmentType" class="form-control" required>
+                                <option value="" disabled <%=(typeof formData==='undefined' || !formData.employmentType)
+                                    ? 'selected' : '' %>>-- Please choose an option --</option>
+                                <option value="Salaried" <%=(typeof formData !=='undefined' &&
+                                    formData.employmentType==='Salaried' ) ? 'selected' : '' %>>Salaried</option>
+                                <option value="Self-employed" <%=(typeof formData !=='undefined' &&
+                                    formData.employmentType==='Self-employed' ) ? 'selected' : '' %>>Self-employed
+                                </option>
+                                <option value="Unemployed" <%=(typeof formData !=='undefined' &&
+                                    formData.employmentType==='Unemployed' ) ? 'selected' : '' %>>Unemployed</option>
+                            </select>
+                        </div>
+
+                        <button id="submit-button" type="submit" class="submit-btn">Check Eligibility</button>
+                    </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            anime({ targets: '#loanFormCard', translateY: [-30, 0], opacity: [0, 1], duration: 800, easing: 'easeOutCubic' });
+        });
+    </script>
+
+    <%- include('partials/footer') %>

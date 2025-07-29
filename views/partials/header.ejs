@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= typeof title !=='undefined' ? title : 'AI Loan System' %>
+    </title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Global Stylesheet -->
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- Page-Specific Stylesheet -->
+    <% if (typeof page_css !=='undefined' ) { %>
+        <link rel="stylesheet" href="/css/<%= page_css %>">
+        <% } %>
+</head>
+
+<body class="<%= (typeof body_class !== 'undefined') ? body_class : '' %>">
+
+    <header class="main-header">
+        <div class="container header-content">
+            <a href="/" class="navbar-brand">AI LoanSys</a>
+            <nav>
+                <ul class="navbar-links">
+                    <% if (user) { %>
+                        <!-- LOGGED-IN USER LOGIC -->
+                        <% if (user.role==='admin' ) { %>
+                            <!-- Admin Links -->
+                            <li><a href="/admin/users">Manage Users</a></li>
+                            <li><a href="/admin/history">History</a></li>
+                            <li><a href="/admin/dashboard">Dashboard</a></li>
+                            <li class="user-welcome">Welcome, <%= user.displayName || user.username %>
+                            </li>
+                            <li><a href="/auth/logout">Logout</a></li>
+                            <% } else { %>
+                                <!-- Normal User Links -->
+                                <li class="user-welcome">Welcome, <%= user.displayName || user.username %>
+                                </li>
+                                <li><a href="/auth/logout">Logout</a></li>
+                                <% } %>
+
+                                    <% } else { %>
+                                        <!-- GUEST USER LOGIC -->
+                                        <li><a href="/auth/login" class="btn btn-primary">Login</a></li>
+                                        <% } %>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <% if (locals.success_msg && locals.success_msg.length> 0) { %>
+                <div class="flash-message success">
+                    <%= locals.success_msg %>
+                </div>
+                <% } %>
+                    <% if (locals.error_msg && locals.error_msg.length> 0) { %>
+                        <div class="flash-message error">
+                            <%= locals.error_msg %>
+                        </div>
+                        <% } %>

@@ -1,0 +1,156 @@
+.dark-theme {
+    --background-color: #1a1a1a;
+    --surface-color: #2c2c2c;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --border-color: #444444;
+    --primary-color-dark: #3395ff;
+    --box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .main-header {
+    background-color: rgba(44, 44, 44, 0.85);
+}
+
+/* --- DASHBOARD HEADER --- */
+.dashboard-header {
+    margin-bottom: 40px;
+}
+
+.dashboard-header h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+}
+
+.dashboard-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* --- GRID LAYOUT --- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+/* --- STAT CARD STYLING --- */
+.stat-card,
+.chart-card,
+.admin-actions-card {
+    background-color: var(--surface-color);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border-left: 4px solid var(--primary-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover,
+.chart-card:hover,
+.admin-actions-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.stat-card h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+/* Text color variants */
+.success-text {
+    color: #28a745;
+}
+
+.review-text {
+    color: #fd7e14;
+}
+
+.danger-text {
+    color: #dc3545;
+}
+
+/* --- CHART CARD STYLING --- */
+.chart-card {
+    grid-column: 1 / -1;
+    border-left-color: #8855ff;
+}
+
+@media (min-width: 992px) {
+    .chart-card {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+}
+
+.chart-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 350px;
+}
+
+/* --- ADMIN ACTIONS CARD --- */
+.admin-actions-card {
+    grid-column: 1 / -1;
+    border-left-color: #ffc107;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 992px) {
+    .admin-actions-card {
+        grid-column: span 1;
+    }
+}
+
+.admin-actions-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.admin-actions-card p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    flex-grow: 1;
+}
+
+.tool-icon {
+    display: inline-block;
+    transform: rotate(-15deg);
+    margin-right: 5px;
+}
+
+.btn-retrain {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+    background: linear-gradient(45deg, #ffc107, #ff9800);
+    color: #1a1a1a;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: var(--border-radius);
+    margin-top: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-retrain:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+}

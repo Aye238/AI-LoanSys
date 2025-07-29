@@ -1,0 +1,308 @@
+.page-auth {
+  background-image: linear-gradient(to top, #f3f4f6 0%, #ffffff 100%);
+}
+
+.auth-card {
+  max-width: 420px;
+  margin: 50px auto;
+  background: var(--surface-color);
+  padding: 40px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-card h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: var(--text-primary);
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  background-color: #fff;
+  color: #444;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-google:hover {
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-google img {
+  width: 20px;
+  height: 20px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--text-secondary);
+  margin: 30px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.divider span {
+  padding: 0 15px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.auth-form .form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.auth-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: var(--primary-color-dark);
+  transform: translateY(-2px);
+}
+
+.auth-card .bottom-link {
+  text-align: center;
+  margin-top: 25px;
+  color: var(--text-secondary);
+}
+
+.auth-card .bottom-link a {
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-card .bottom-link a:hover {
+  text-decoration: underline;
+}
+
+.auth-card .error-message {
+  color: var(--error-color);
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: var(--border-radius);
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* === LOAN APPLICATION FORM STYLES === */
+.form-page-container {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.form-card {
+  max-width: 700px;
+  margin: 0 auto;
+  background: var(--surface-color);
+  border-radius: 12px;
+  box-shadow: var(--box-shadow);
+  opacity: 0;
+}
+
+.form-card-header {
+  background: linear-gradient(45deg, var(--primary-color), var(--primary-color-dark));
+  color: white;
+  padding: 30px 40px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.form-card-header h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.form-card-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-top: 5px;
+}
+
+#loan-form {
+  padding: 40px;
+}
+
+#loan-form .form-group {
+  margin-bottom: 25px;
+}
+
+#loan-form .form-control {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  background-color: #fdfdff;
+  transition: all 0.3s ease;
+}
+
+#loan-form .form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+.error-container {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin: 0 40px 20px 40px;
+}
+
+.error-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.error-container li {
+  color: #721c24;
+  font-weight: 500;
+}
+
+#submit-button {
+  padding: 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* === INTERACTIVE TOOLTIP STYLES === */
+.tooltip-trigger {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: var(--secondary-color);
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: help;
+  margin-left: 8px;
+  position: relative;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.tooltip-trigger:hover {
+  background-color: var(--primary-color);
+}
+
+.tooltip-trigger::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #2c2c2c;
+  color: #e0e0e0;
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  width: 280px;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 10;
+}
+
+.tooltip-trigger::before {
+  content: '';
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  border: 8px solid transparent;
+  border-top-color: #2c2c2c;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 11;
+}
+
+.tooltip-trigger:hover::after,
+.tooltip-trigger:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+#loan-form .form-group label {
+  display: inline-block;
+  vertical-align: middle;
+}

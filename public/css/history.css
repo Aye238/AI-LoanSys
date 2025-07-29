@@ -1,0 +1,208 @@
+.dark-theme {
+    --background-color: #1a1a1a;
+    --surface-color: #2c2c2c;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --border-color: #444444;
+    --primary-color-dark: #3395ff;
+}
+
+.dark-theme .main-header {
+    background-color: rgba(44, 44, 44, 0.85);
+}
+
+.history-header {
+    margin-bottom: 30px;
+}
+
+.history-header h1 {
+    font-size: 2.5rem;
+}
+
+.history-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.filter-container {
+    margin-bottom: 30px;
+}
+
+.filter-drawer {
+    display: none;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    margin-top: 15px;
+}
+
+.filter-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: var(--border-radius);
+}
+
+.form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.dark-theme .btn-secondary {
+    background-color: #555;
+    color: white;
+    border-color: #666;
+}
+
+.dark-theme .btn-secondary:hover {
+    background-color: #666;
+}
+
+
+/* --- Table Styling --- */
+.history-table-container {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+    box-shadow: var(--box-shadow);
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.history-table th,
+.history-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.history-table th {
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+.history-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.history-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.history-table tbody tr.expandable-row:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+}
+
+.applicant-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.loan-amount {
+    font-weight: 600;
+}
+
+.arrow {
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+.expandable-row.active .arrow {
+    transform: rotate(180deg);
+}
+
+/* --- Status Pills --- */
+.status-pill {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.status-auto-approved {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: #58cc73;
+}
+
+.status-auto-rejected {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #ff8a96;
+}
+
+.status-needs-review {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: #ffce4e;
+}
+
+/* --- Collapsible Details Row --- */
+.details-row {
+    display: none;
+}
+
+.details-row td {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.details-content {
+    padding: 20px;
+}
+
+.override-form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.no-results td {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* --- Pagination --- */
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+
+.page-info {
+    color: var(--text-secondary);
+}
+
+.pagination-links {
+    display: flex;
+    gap: 10px;
+}

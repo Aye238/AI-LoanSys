@@ -1,0 +1,87 @@
+<%- include('partials/header', { title: 'Application Result' , page_css: 'result.css' , body_class: 'page-result' }) %>
+
+    <div class="result-page-container">
+        <div id="resultCard">
+            <% let cardType='' ; let icon='' ; let titleText='' ; if (decision==='Auto-Approved' ) { cardType='success'
+                ; icon='✓' ; titleText='Congratulations! Approved!' ; } else if (decision==='Needs Review' ) {
+                cardType='review' ; icon='☎' ; titleText='Application Needs Review' ; } else { // Rejected
+                cardType='danger' ; icon='✕' ; titleText='Application Not Approved' ; } %>
+
+                <div class="result-card <%= cardType %>">
+                    <div class="icon-circle">
+                        <%= icon %>
+                    </div>
+                    <h2>
+                        <%= titleText %>
+                    </h2>
+                    <p class="reason-text">
+                        <%= reason %>
+                    </p>
+
+                    <% if (decision==='Auto-Rejected' && suggestion && suggestion.suggested_amount) { %>
+                        <div class="suggestion-box">
+                            <h4><span class="lightbulb">💡</span> AI Co-Pilot Suggestion</h4>
+                            <p>
+                                Our analysis suggests that an application for an amount around
+                                <strong>$<%= Number(suggestion.suggested_amount).toLocaleString() %></strong>
+                                would have a much higher probability of approval.
+                            </p>
+                        </div>
+                        <% } %>
+
+                            <div class="summary-toggle" id="summaryToggle">
+                                Show Submitted Details <span class="arrow">▼</span>
+                            </div>
+
+                            <div class="summary-details" id="summaryDetails">
+                                <h3>Your Application Summary</h3>
+                                <ul>
+                                    <li><strong>Credit Score:</strong>
+                                        <%= submittedData.creditScore %>
+                                    </li>
+                                    <li><strong>Annual Income:</strong> $<%=
+                                            Number(submittedData.annualIncome).toLocaleString() %>
+                                    </li>
+                                    <li><strong>Loan Amount Requested:</strong> $<%=
+                                            Number(submittedData.loanAmount).toLocaleString() %>
+                                    </li>
+                                    <li><strong>Employment Type:</strong>
+                                        <%= submittedData.employmentType %>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <a href="/" class="btn btn-primary">Submit a New Application</a>
+                </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            anime({ targets: '#resultCard', translateY: [-30, 0], opacity: [0, 1], duration: 800, easing: 'easeOutCubic' });
+
+            const toggle = document.getElementById('summaryToggle');
+            const details = document.getElementById('summaryDetails');
+            const arrow = toggle.querySelector('.arrow');
+
+            toggle.addEventListener('click', () => {
+                const isHidden = details.style.display === 'none' || !details.style.display;
+                if (isHidden) {
+                    details.style.display = 'block';
+                    arrow.textContent = '▲';
+                    anime({ targets: details, height: [0, details.scrollHeight], opacity: [0, 1], duration: 400, easing: 'easeOutCubic' });
+                } else {
+                    anime({
+                        targets: details,
+                        height: 0,
+                        opacity: 0,
+                        duration: 400,
+                        easing: 'easeInCubic',
+                        complete: () => { details.style.display = 'none'; arrow.textContent = '▼'; }
+                    });
+                }
+            });
+        });
+    </script>
+
+    <%- include('partials/footer') %>
