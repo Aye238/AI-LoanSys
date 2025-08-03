@@ -31,15 +31,17 @@ def get_data_from_db():
         return None
 
 def assign_risk_class(row):
+    if row['Credit_History'] != 1.0:
+        return 'High Risk'
+    
     debt_to_income_ratio = row['LoanAmount'] / (row['ApplicantIncome'] + 1)
     
-    if row['Loan_Status'] == 0 or row['Credit_History'] != 1.0:
-        return 'High Risk'
-    if debt_to_income_ratio > 0.55:
-        return 'Sub-prime'
-    if debt_to_income_ratio < 0.30 and row['ApplicantIncome'] > 60000:
+    if debt_to_income_ratio <= 0.4:
         return 'Prime'
-    return 'Standard'
+    elif debt_to_income_ratio <= 1.0:
+        return 'Standard'
+    else:
+        return 'Sub-prime'
 
 parser = argparse.ArgumentParser(description='Train AI models.')
 parser.add_argument('--retrain', action='store_true', help='Augments CSV data with data from MongoDB.')
